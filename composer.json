@@ -8,8 +8,21 @@
             "email": "paul@huenits.com"
         }
     ],
-    "require": {},
+    "require": {
+        "erusev/parsedown": "^1.7",
+        "symfony/yaml": "^4.2"
+    },
     "require-dev": {
         "orchestra/testbench": "^3.8"
+    },
+    "autoload": {
+      "psr-4": {
+        "huenisys\\Blog\\": "src/"
+      }
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "huenisys\\Blog\\Tests\\": "tests/"
+      }
     }
 }
