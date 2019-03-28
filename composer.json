@@ -1,0 +1,15 @@
+{
+    "name": "huenisys/blog",
+    "description": "a laravel blog package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "huenisys",
+            "email": "paul@huenits.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "^3.8"
+    }
+}
