@@ -1,13 +1,16 @@
 <?php
 
-namespace huenisys\Blog;
+namespace huenisys\Publisher;
 
 use Illuminate\Support\Facades\File;
-use Symfony\Component\Yaml\Yaml;
+use huenisys\Parsers\Yaml;
+use huenisys\Parsers\Markdown;
 
-class MdBlogParser
+class MdFileParser
 {
-    protected $dataArray;
+    protected $rawContentArr;
+    protected $data;
+    protected $parsedContent;
 
     public function __construct($filepath_or_content)
     {
@@ -17,9 +20,14 @@ class MdBlogParser
         $this->_splitContent($content);
     }
 
+    public function saveNormalizedData($normalData)
+    {
+        $this->data = $normalData;
+    }
+
     public function getMetaInYaml()
     {
-        return $this->dataArray[2];
+        return $this->rawContentArr[2];
     }
 
     public function getMeta(String $key = null)
@@ -32,15 +40,21 @@ class MdBlogParser
 
     public function getBodyInMd()
     {
-        return $this->dataArray[3];
+        return $this->rawContentArr[3];
+    }
+
+    public function getBodyInHtml()
+    {
+        return Markdown::parse($this->getBodyInMd());
     }
 
     protected function _splitContent($content)
     {
+        dump($content);
         preg_match(
             '/^(`{3}yaml(.*)`{3})?(.*)/s',
             $content,
-            $this->dataArray
+            $this->rawContentArr
         );
     }
 }
