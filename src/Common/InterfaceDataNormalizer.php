@@ -9,9 +9,9 @@ interface InterfaceDataNormalizer
      * transform into new arraw
      * with desired keys
      *
-     * @param Array $data
+     * @param array $data
      * @param callable|null $callback
-     * @return Array
+     * @return array
      */
     static function normalizeData($data);
 }

@@ -8,7 +8,7 @@ use huenisys\Parsers\Yaml;
 abstract class AbstractSchema
     implements InterfaceSchema, InterfaceDataNormalizer {
 
-    use TraitRawDataNormalizer;
+    use TraitRawDataNormalizer, TraitArrayDeepMerge;
 
     /**
      * Processor instance who started this
@@ -24,7 +24,7 @@ abstract class AbstractSchema
      *
      * e.g. [title:, slug:, extras: {json}, structuredData: {json}]
      *
-     * @var Array
+     * @var array
      */
     public $normalData = [];
 
@@ -34,14 +34,14 @@ abstract class AbstractSchema
      *
      * e.g. [title:, slug:, extras: {json}, structuredData: {json}]
      *
-     * @var Array
+     * @var array
      */
     public $validData = [];
 
     /**
      * Rules describing reqs by schema
      *
-     * @var Array
+     * @var array
      */
     public $schemaRules = [
         'id' => 'numeric',

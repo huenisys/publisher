@@ -37,13 +37,17 @@ class SchemaArticleTest
         $arr1 = [
             'meta' => [
                 'title' => 'hey',
-                'author' => 'Paul'
+                'author' => 'Paul',
+                'desc' => 'Some description',
+                'category' => 'Some Category'
             ],
             'body' => 'body'
         ];
 
 
         $result = SchemaArticle::normalizeData($arr1);
+
+        dump($result);
 
         $this->assertTrue(true);
     }

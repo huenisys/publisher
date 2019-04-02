@@ -10,7 +10,7 @@ class Config {
      * The type of posting
      * e.g. Article
      *
-     * @var String
+     * @var string
      */
     public $schema = 'Article';
 
@@ -18,7 +18,7 @@ class Config {
      * Regex for capturing groups
      * e.g. '/^(`{3}(yaml)?(.*)`{3})?(.*)/s'
      *
-     * @var String
+     * @var string
      */
     public $regex = '/^(`{3}(yaml)?(.*)`{3})?(.*)/s';
 
@@ -28,7 +28,7 @@ class Config {
      * meta is at index 3
      * body is at index 4
      *
-     * @var Array
+     * @var array
      */
     public $sections = [
         'content' => 0,

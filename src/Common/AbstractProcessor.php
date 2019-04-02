@@ -25,21 +25,21 @@ abstract class AbstractProcessor
     /**
      * Path to file
      *
-     * @var String
+     * @var string
      */
     public $filepath;
 
     /**
      * Used as output for preg_match
      *
-     * @var Array
+     * @var array
      */
     private $rawData = [];
 
     /**
      * Data that will be used to create a model
      *
-     * @var Array
+     * @var array
      */
     public $normalData = [];
 
@@ -47,7 +47,7 @@ abstract class AbstractProcessor
      * Process file
      *
      * @param string $filepath
-     * @param Array $config
+     * @param array $config
      */
     public function __construct($filepath, Array $config = [])
     {

@@ -7,7 +7,7 @@ interface InterfaceSchema
     /**
      * Process data
      *
-     * @var Array
+     * @var array
      */
     // public function normalize($rawData);
     // public function validate($normalData);
