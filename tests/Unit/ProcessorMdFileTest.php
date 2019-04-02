@@ -2,10 +2,10 @@
 
 namespace huenisys\Publisher\Tests\Unit;
 
-use huenisys\Publisher\FileProcessor;
 use PHPUnit\Framework\TestCase;
+use huenisys\Publisher\ProcessorMdFile;
 
-class FileProcessorTest
+class ProcessorMdFileTest
     extends TestCase
 {
     protected $file1 = __DIR__.'/../../test-files/file1.md';
@@ -18,7 +18,7 @@ class FileProcessorTest
     protected function _processFile1()
     {
         $this->file1Processor
-            = new FileProcessor($this->file1);
+            = new ProcessorMdFile($this->file1);
     }
 
     /** @test **/
@@ -30,7 +30,7 @@ class FileProcessorTest
     /** @test **/
     public function _configure_allowChangingConfig()
     {
-        $processor = new FileProcessor($this->file1, ['schema'=>'BlogPost']);
+        $processor = new ProcessorMdFile($this->file1, ['schema'=>'BlogPost']);
         $this->assertEquals('BlogPost', $processor->config->schema);
     }
 
@@ -38,11 +38,11 @@ class FileProcessorTest
     public function _fileCheck_givenMissingFile_expectExceptionMessage()
     {
         $this->expectExceptionMessage('File to process is not found.');
-        new FileProcessor('missingFile.md');
+        new ProcessorMdFile('missingFile.md');
     }
 
     /** @test **/
-    public function _buildRawData_check_full_content()
+    public function _buildRawData_ContentHasEverything()
     {
         $this->assertStringContainsString(
             'title: Hello World',
@@ -54,7 +54,7 @@ class FileProcessorTest
     }
 
     /** @test **/
-    public function _buildRawData_meta_and_body_is_set()
+    public function _buildRawData_metaAndBodyIsSet()
     {
         $this->assertStringContainsString(
             'title: Hello World',
@@ -63,9 +63,6 @@ class FileProcessorTest
         $this->assertStringContainsString(
             '# hello world',
             $this->file1Processor->getRawData('body'));
-
-        // dump($this->file1Processor);
-
     }
 
     /** @test **/

@@ -1,11 +1,11 @@
 <?php
 
-namespace huenisys\Publisher\Tests\Unit\Schemas;
+namespace huenisys\Publisher\Tests\Unit;
 
-use huenisys\Publisher\Schemas\Article;
 use PHPUnit\Framework\TestCase;
+use huenisys\Publisher\SchemaArticle;
 
-class ArticleTest
+class SchemaArticleTest
     extends TestCase
 {
     public function setUp() :void
@@ -24,13 +24,13 @@ class ArticleTest
     }
 
     /** @test **/
-    public function true()
+    public function justSayTrue()
     {
        $this->assertTrue(true);
     }
 
     /** @test **/
-    public function test_normalizer()
+    public function normalizer()
     {
         // here there's no title
         // but we want it as required in an array
@@ -43,7 +43,7 @@ class ArticleTest
         ];
 
 
-        $result = Article::normalizeData($arr1);
+        $result = SchemaArticle::normalizeData($arr1);
 
         $this->assertTrue(true);
     }

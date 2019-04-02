@@ -1,17 +1,14 @@
 <?php
 
-namespace huenisys\Publisher\Schemas;
+namespace huenisys\Publisher\Common;
 
 use huenisys\Validator\Validator;
+use huenisys\Parsers\Yaml;
 
-use huenisys\Publisher\Interfaces\Schema as SchemaInterface;
-use huenisys\Publisher\Interfaces\DataNormalizer as DataNormalizerInterface;
-use huenisys\Publisher\Traits\RawDataNormalizer as RawDataNormalizerTrait;
+abstract class AbstractSchema
+    implements InterfaceSchema, InterfaceDataNormalizer {
 
-abstract class SchemaAbstract
-    implements SchemaInterface, DataNormalizerInterface {
-
-    use RawDataNormalizerTrait;
+    use TraitRawDataNormalizer;
 
     /**
      * Processor instance who started this
@@ -74,7 +71,7 @@ abstract class SchemaAbstract
     protected function _validateData(){}
     protected function _saveData(){}
 
-    public function __construct(Interfaces\FileProcessor $processor)
+    public function __construct(InterfaceFileProcessor $processor)
     {
         // normalize the $rawData
         $this->processor = $processor;
@@ -86,7 +83,12 @@ abstract class SchemaAbstract
 
     protected function _normalizeRawData()
     {
-        static::normalizeData($this->processor->getRawData(), null);
+        $data = [
+            'meta' => Yaml::parse($this->processor->getRawData('meta')),
+            'body' => $this->processor->getRawData('body')
+        ];
+
+        static::normalizeData($data, null);
     }
 
     public function getProcessorInstance()

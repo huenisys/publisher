@@ -1,8 +1,8 @@
 <?php
 
-namespace huenisys\Publisher\Interfaces;
+namespace huenisys\Publisher\Common;
 
-interface FileProcessor
+interface InterfaceSchema
 {
     /**
      * Process data

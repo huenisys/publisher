@@ -1,11 +1,12 @@
 <?php
 
-namespace huenisys\Publisher;
+namespace huenisys\Publisher\Common;
 
 use huenisys\Publisher\Config;
 
-abstract class FileProcessorAbstract
-    implements Interfaces\FileProcessor {
+abstract class AbstractProcessor
+    implements InterfaceFileProcessor
+{
 
     /**
      * Instance of Schema
@@ -17,7 +18,7 @@ abstract class FileProcessorAbstract
     /**
      * configuration
      *
-     * @var FileProcessorConfig
+     * @var Config
      */
     public $config;
 
@@ -45,7 +46,7 @@ abstract class FileProcessorAbstract
     /**
      * Process file
      *
-     * @param String $filepath
+     * @param string $filepath
      * @param Array $config
      */
     public function __construct($filepath, Array $config = [])
@@ -97,8 +98,8 @@ abstract class FileProcessorAbstract
     protected function _runSchemaProcedures()
     {
 
-        $schemaClass = "huenisys\\Publisher\\Schemas\\"
-            .$this->config->schema;
+        $schemaClass = 'huenisys\Publisher\Schema'
+            . $this->config->schema;
 
         if (class_exists($schemaClass))
             $this->schema = new $schemaClass($this);
@@ -125,6 +126,4 @@ abstract class FileProcessorAbstract
         return $this->schema;
     }
 
-    // fetches from model data
-    // abstract public function getData($key);
 }

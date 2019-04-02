@@ -1,8 +1,8 @@
 <?php
 
-namespace huenisys\Publisher\Normalizers;
+namespace huenisys\Publisher;
 
-class Title extends NormalizerAbstract
+class NormalizerTitle extends Common\AbstractNormalizer
 {
     public static function normalizeValue($value)
     {

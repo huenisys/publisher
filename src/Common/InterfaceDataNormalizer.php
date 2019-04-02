@@ -1,8 +1,8 @@
 <?php
 
-namespace huenisys\Publisher\Interfaces;
+namespace huenisys\Publisher\Common;
 
-interface DataNormalizer
+interface InterfaceDataNormalizer
 {
     /**
      * Pass arraw of data and
