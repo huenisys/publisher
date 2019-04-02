@@ -8,7 +8,7 @@ use huenisys\Publisher\ProcessorMdFile;
 class ProcessorMdFileTest
     extends TestCase
 {
-    protected $file1 = __DIR__.'/../../test-files/file1.md';
+    protected $file1 = __DIR__.'/../files/file1.md';
 
     public function setUp() :void
     {

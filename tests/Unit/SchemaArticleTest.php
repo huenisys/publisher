@@ -44,7 +44,6 @@ class SchemaArticleTest
             'body' => 'body'
         ];
 
-
         $result = SchemaArticle::normalizeData($arr1);
 
         dump($result);
