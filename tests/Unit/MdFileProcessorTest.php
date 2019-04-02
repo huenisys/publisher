@@ -3,9 +3,9 @@
 namespace huenisys\Publisher\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use huenisys\Publisher\ProcessorMdFile;
+use huenisys\Publisher\MdFileProcessor;
 
-class ProcessorMdFileTest
+class MdFileProcessorTest
     extends TestCase
 {
     protected $file1 = __DIR__.'/../files/file1.md';
@@ -18,7 +18,7 @@ class ProcessorMdFileTest
     protected function _processFile1()
     {
         $this->file1Processor
-            = new ProcessorMdFile($this->file1);
+            = new MdFileProcessor($this->file1);
     }
 
     /** @test **/
@@ -30,7 +30,7 @@ class ProcessorMdFileTest
     /** @test **/
     public function _configure_allowChangingConfig()
     {
-        $processor = new ProcessorMdFile($this->file1, ['schema'=>'BlogPost']);
+        $processor = new MdFileProcessor($this->file1, ['schema'=>'BlogPost']);
         $this->assertEquals('BlogPost', $processor->config->schema);
     }
 
@@ -38,7 +38,7 @@ class ProcessorMdFileTest
     public function _fileCheck_givenMissingFile_expectExceptionMessage()
     {
         $this->expectExceptionMessage('File to process is not found.');
-        new ProcessorMdFile('missingFile.md');
+        new MdFileProcessor('missingFile.md');
     }
 
     /** @test **/
@@ -66,13 +66,13 @@ class ProcessorMdFileTest
     }
 
     /** @test **/
-    public function _runSchemaProcedures_verifyObjects()
+    public function _runSchemaProcedures_verifySchemaObjectCreated()
     {
-        $this->assertEquals(
-            $this->file1Processor,
-            $this->file1Processor
-                ->getSchemaInstance()->getProcessorInstance()
-        );
+        //$this->assertInternalType()
+        $this->assertInstanceOf(
+            'huenisys\Publisher\Common\InterfaceSchema',
+            $this->file1Processor->getSchemaInstance()
+            );
     }
 
 }

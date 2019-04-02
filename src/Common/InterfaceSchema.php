@@ -5,10 +5,9 @@ namespace huenisys\Publisher\Common;
 interface InterfaceSchema
 {
     /**
-     * Process data
+     * Returns the type
      *
-     * @var array
+     * @return string
      */
-    // public function normalize($rawData);
-    // public function validate($normalData);
+    public function getType();
 }

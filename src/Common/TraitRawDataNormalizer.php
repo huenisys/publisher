@@ -3,6 +3,7 @@
 namespace huenisys\Publisher\Common;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 trait TraitRawDataNormalizer
 {
@@ -22,9 +23,13 @@ trait TraitRawDataNormalizer
     {
         // go flatter by one level
         // since we expect rawData to have
-        $flatterData = array_merge($rawData['meta'], ['body'=>$rawData['body']]);
+        $flatterData = array_merge(
+            $rawData['meta'] ?? [],
+            isSet($rawData['body']) ? ['body' => $rawData['body']] : [],
+            Arr::except($rawData, ['meta', 'body'])
+        );
 
-            dump($flatterData);
+        // dump('flatterData', $flatterData);
 
         $normalData = [];
 
@@ -37,7 +42,7 @@ trait TraitRawDataNormalizer
 
             if (class_exists($defNormalizerClass)):
                 $temp1 = call_user_func_array($defNormalizerClass.'::normalizeValue', [$v]);
-                dump('$temp1', $temp1);
+                // dump('$temp1', $temp1);
                 $normalData = array_merge_recursive($normalData, $temp1);
             // alternate
             elseif (class_exists($altNormalizerClass)):

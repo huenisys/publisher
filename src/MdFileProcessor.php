@@ -1,17 +1,21 @@
 <?php
 
-namespace huenisys\Publisher\Common;
+namespace huenisys\Publisher;
 
 use huenisys\Publisher\Config;
+use huenisys\Publisher\Schema\Article;
 
-abstract class AbstractProcessor
-    implements InterfaceFileProcessor
+class MdFileProcessor
+    implements Common\InterfaceProcessor
 {
+    use Common\TraitProcessorConfigurables;
 
     /**
-     * Instance of Schema
+     * Instance of Schema dynamically create when a
+     * processor runs based on the schema set
+     * in the constructor config
      *
-     * @var Interfaces\Schema
+     * @var Common\InterfaceSchema
      */
     protected $schema;
 
@@ -42,6 +46,11 @@ abstract class AbstractProcessor
      * @var array
      */
     public $normalData = [];
+
+    public function getSchemaInstance()
+    {
+        return $this->schema;
+    }
 
     /**
      * Process file
@@ -97,13 +106,17 @@ abstract class AbstractProcessor
 
     protected function _runSchemaProcedures()
     {
+        $defSchemaClass = self::DEFAULT_SCHEMA_NAMESPACE . $this->config->schema;
+        $altSchemaClass = static::$altSchemaNamespace . $this->config->schema;
 
-        $schemaClass = 'huenisys\Publisher\Schema'
-            . $this->config->schema;
-
-        if (class_exists($schemaClass))
-            $this->schema = new $schemaClass($this);
-        // else throw error
+        if (class_exists($defSchemaClass)):
+            $this->schema = new $defSchemaClass($this->rawData);
+        // alternate
+        elseif (class_exists($altSchemaClass)):
+            $this->schema = new $altSchemaClass($this->rawData);
+        else:
+            $this->schema = new static::$fallbackSchemaClass($this->rawData);
+        endif;
     }
 
     /**
@@ -119,11 +132,6 @@ abstract class AbstractProcessor
             : $this->rawData[$sectionName];
 
         return $rawData;
-    }
-
-    public function getSchemaInstance()
-    {
-        return $this->schema;
     }
 
 }

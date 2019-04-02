@@ -3,51 +3,44 @@
 namespace huenisys\Publisher\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use huenisys\Publisher\SchemaArticle;
+use huenisys\Publisher\Schema\Article;
 
-class SchemaArticleTest
+class ArticleTest
     extends TestCase
 {
-    public function setUp() :void
-    {
-
-        // do mockery here
-
-        $rawData = [
-            'meta' => 'title: Some Title',
-            'body' => '# hello world',
-        ];
-
-        // $article = new Article($rawData);
-
-        // dump($article);
-    }
-
     /** @test **/
-    public function justSayTrue()
-    {
-       $this->assertTrue(true);
-    }
-
-    /** @test **/
-    public function normalizer()
+    public function normalizeData_receivedArrayHasUppercasedFirstKeys()
     {
         // here there's no title
         // but we want it as required in an array
-        $arr1 = [
+        $data = [
             'meta' => [
-                'title' => 'hey',
-                'author' => 'Paul',
-                'desc' => 'Some description',
-                'category' => 'Some Category'
+                'title' => 'hey1',
             ],
             'body' => 'body'
         ];
 
-        $result = SchemaArticle::normalizeData($arr1);
+        $this->assertArrayHasKey('Title', Article::normalizeData($data));
+        $this->assertArrayHasKey('Body', Article::normalizeData($data));
+    }
 
-        dump($result);
+    /** @test **/
+    public function normalizeData_metaGetsFlattened()
+    {
+        // here there's no title
+        // but we want it as required in an array
+        $data = [
+            'meta' => [
+                'title1' => 'hey',
+                'author1' => 'Paul',
+            ],
+            'body1' => 'body'
+        ];
 
-        $this->assertTrue(true);
+        $this->assertEquals([
+            'Title1' => 'hey',
+            'Author1' => 'Paul',
+            'Body1' => 'body'
+        ], Article::normalizeData($data));
     }
 }

@@ -11,11 +11,18 @@ abstract class AbstractSchema
     use TraitRawDataNormalizer, TraitArrayDeepMerge;
 
     /**
-     * Processor instance who started this
+     * Schema Type
      *
-     * @var Interfaces\FileProcessor;
+     * @var string
      */
-    protected $processor;
+    protected $type = 'Article';
+
+    /**
+     * Stores meta and body in markdown
+     *
+     * @var array
+     */
+    protected $data;
 
     /**
      * Raw data transformed to one-level
@@ -26,7 +33,7 @@ abstract class AbstractSchema
      *
      * @var array
      */
-    public $normalData = [];
+    protected $normalData = [];
 
     /**
      * Once data is normalized
@@ -36,7 +43,7 @@ abstract class AbstractSchema
      *
      * @var array
      */
-    public $validData = [];
+    protected $validData = [];
 
     /**
      * Rules describing reqs by schema
@@ -71,10 +78,22 @@ abstract class AbstractSchema
     protected function _validateData(){}
     protected function _saveData(){}
 
-    public function __construct(InterfaceFileProcessor $processor)
+    public function getType()
     {
-        // normalize the $rawData
-        $this->processor = $processor;
+        return $this->type;
+    }
+
+    /**
+     * Eloquent
+     *
+     * @param array $rawData
+     */
+    public function __construct(array $rawData)
+    {
+        $this->data = [
+            'meta' => Yaml::parse($rawData['meta']),
+            'body' => $rawData['body']
+        ];
 
         $this->_normalizeRawData(); // prep the needed keyps
         $this->_validateData(); // validate the key values pari
@@ -83,16 +102,6 @@ abstract class AbstractSchema
 
     protected function _normalizeRawData()
     {
-        $data = [
-            'meta' => Yaml::parse($this->processor->getRawData('meta')),
-            'body' => $this->processor->getRawData('body')
-        ];
-
-        static::normalizeData($data, null);
-    }
-
-    public function getProcessorInstance()
-    {
-        return $this->processor;
+        static::normalizeData($this->data, null);
     }
 }
