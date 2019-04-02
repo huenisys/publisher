@@ -1,6 +1,6 @@
 {
-    "name": "huenisys/blog",
-    "description": "a laravel blog package",
+    "name": "huenisys/publisher",
+    "description": "a laravel publisher package",
     "license": "MIT",
     "authors": [
         {
@@ -9,20 +9,21 @@
         }
     ],
     "require": {
-        "erusev/parsedown": "^1.7",
-        "symfony/yaml": "^4.2"
-    },
-    "require-dev": {
-        "orchestra/testbench": "^3.8"
+        "huenisys/parsers": "^0.0.1",
+        "illuminate/support": "^5.8",
+        "huenisys/validator": "^0.0.2"
     },
     "autoload": {
       "psr-4": {
-        "huenisys\\Blog\\": "src/"
+        "huenisys\\Publisher\\": "src/"
       }
     },
     "autoload-dev": {
       "psr-4": {
-        "huenisys\\Blog\\Tests\\": "tests/"
+        "huenisys\\Publisher\\Tests\\": "tests/"
       }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
     }
 }
