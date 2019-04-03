@@ -22,50 +22,6 @@ class MdFileProcessorTest
     }
 
     /** @test **/
-    public function __construct_givenExistingFile_receiveRawData()
-    {
-        $this->assertNotEmpty($this->file1Processor->getRawData());
-    }
-
-    /** @test **/
-    public function _configure_allowChangingConfig()
-    {
-        $processor = new MdFileProcessor($this->file1, ['schema'=>'BlogPost']);
-        $this->assertEquals('BlogPost', $processor->config->schema);
-    }
-
-    /** @test **/
-    public function _fileCheck_givenMissingFile_expectExceptionMessage()
-    {
-        $this->expectExceptionMessage('File to process is not found.');
-        new MdFileProcessor('missingFile.md');
-    }
-
-    /** @test **/
-    public function _buildRawData_ContentHasEverything()
-    {
-        $this->assertStringContainsString(
-            'title: Hello World',
-            $this->file1Processor->getRawData('content'));
-
-        $this->assertStringContainsString(
-            '# hello world',
-            $this->file1Processor->getRawData('content'));
-    }
-
-    /** @test **/
-    public function _buildRawData_metaAndBodyIsSet()
-    {
-        $this->assertStringContainsString(
-            'title: Hello World',
-            $this->file1Processor->getRawData('meta'));
-
-        $this->assertStringContainsString(
-            '# hello world',
-            $this->file1Processor->getRawData('body'));
-    }
-
-    /** @test **/
     public function _runSchemaProcedures_verifySchemaObjectCreated()
     {
         //$this->assertInternalType()
@@ -73,6 +29,8 @@ class MdFileProcessorTest
             'huenisys\Publisher\Common\InterfaceSchema',
             $this->file1Processor->getSchemaInstance()
             );
+
+        dump($this->file1Processor);
     }
 
 }

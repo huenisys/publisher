@@ -47,6 +47,11 @@ class MdFileProcessor
      */
     public $normalData = [];
 
+    /**
+     * @var FileReader;
+     */
+    public $fileReader;
+
     public function getSchemaInstance()
     {
         return $this->schema;
@@ -60,62 +65,25 @@ class MdFileProcessor
      */
     public function __construct($filepath, Array $config = [])
     {
-        $this->filepath = $filepath;
-
-        $this->_configure(new Config($config));
-
-        $this->_fileCheck();
-
-        $this->_buildRawData();
+        $this->fileReader = new FileReader($filepath, $config);
 
         $this->_runSchemaProcedures();
-
-        // schemaCheck it
-        // when schema is done, it's saved in db
-        // export it
-    }
-
-    protected function _configure(Config $config)
-    {
-        $this->config = $config;
-    }
-
-    protected function _fileCheck()
-    {
-        if (! file_exists($this->filepath))
-            throw new \Exception('File to process is not found.');
-    }
-
-    protected function _buildRawData()
-    {
-        preg_match(
-            $this->config->regex,
-            file_get_contents($this->filepath),
-            $this->rawData
-        );
-
-        // build named sections
-        // effectively $rawData['content'] = $rawData[0] etc.
-        foreach ($this->config->sections as $sectionName => $index)
-        {
-            $this->rawData[$sectionName]
-                // remove trailing whitespace
-                = trim($this->rawData[$index]);
-        }
     }
 
     protected function _runSchemaProcedures()
     {
-        $defSchemaClass = self::DEFAULT_SCHEMA_NAMESPACE . $this->config->schema;
-        $altSchemaClass = static::$altSchemaNamespace . $this->config->schema;
+        $defSchemaClass = self::DEFAULT_SCHEMA_NAMESPACE . $this->fileReader->getSchemaType();
+        $altSchemaClass = static::$altSchemaNamespace . $this->fileReader->getSchemaType();
+
+        $rawData = $this->fileReader->getSectionData();
 
         if (class_exists($defSchemaClass)):
-            $this->schema = new $defSchemaClass($this->rawData);
+            $this->schema = new $defSchemaClass($rawData);
         // alternate
         elseif (class_exists($altSchemaClass)):
-            $this->schema = new $altSchemaClass($this->rawData);
+            $this->schema = new $altSchemaClass($rawData);
         else:
-            $this->schema = new static::$fallbackSchemaClass($this->rawData);
+            $this->schema = new static::$fallbackSchemaClass($rawData);
         endif;
     }
 
@@ -127,11 +95,7 @@ class MdFileProcessor
      */
     public function getRawData($sectionName = null, $format = null)
     {
-        $rawData = is_null($sectionName)
-            ? $this->rawData
-            : $this->rawData[$sectionName];
-
-        return $rawData;
+        return $this->fileReader->getSectionData($sectionName);
     }
 
 }

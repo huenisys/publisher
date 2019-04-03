@@ -12,7 +12,7 @@ class Config {
      *
      * @var string
      */
-    public $schema = 'Article';
+    public $schemaType = 'Article';
 
     /**
      * Regex for capturing groups
@@ -36,15 +36,20 @@ class Config {
         'body' => 4
     ];
 
+    public $configBag = [];
+
+    //filereader: regex, sections, schemaType
+
     public function __construct(Array $config = [])
     {
-        $whitelist
+        $whitelistFileReader = $this->configBag['fileReader']
             = Arr::only($config, [
-                'schema',
+                'schemaType',
                 'regex',
                 'sections']);
 
-        foreach ($whitelist as $configKey => $configVal)
+        foreach ($whitelistFileReader as $configKey => $configVal)
             $this->$configKey = $configVal;
+
     }
 }
